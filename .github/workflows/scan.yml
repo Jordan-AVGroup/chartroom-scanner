@@ -1,0 +1,35 @@
+name: scan
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+    - cron: '17 9 1 * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+  issues: write
+concurrency:
+  group: scan
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python scanner.py --json alert.json
+        env:
+          IA_BARS: '1300'
+      - run: python alert.py
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: monthly keepalive (GitHub pauses cron after 60 idle days)
+        if: github.event.schedule == '17 9 1 * *'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          date -u > .keepalive && git add .keepalive && git commit -m "keepalive" && git push
