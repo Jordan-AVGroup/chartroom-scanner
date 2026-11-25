@@ -1,0 +1,16 @@
+{
+ "started": 1795646807,
+ "books": {
+  "micro": {
+   "eq": 20.0,
+   "start": 20.0
+  },
+  "full": {
+   "eq": 1000.0,
+   "start": 1000.0
+  }
+ },
+ "open": [],
+ "closed": [],
+ "seen": []
+}
