@@ -27,6 +27,19 @@ jobs:
       - run: python alert.py
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: python paper.py
+      - name: save paper ledger and post fills
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -s paper_log.txt ]; then
+            gh issue create --title "Paper fills $(date -u +'%b %d %H:%M UTC')" --label paper --assignee "$GITHUB_REPOSITORY_OWNER" --body "$(cat paper_log.txt)"
+          fi
+          if ! git diff --quiet -- paper.json 2>/dev/null || [ -n "$(git status --porcelain paper.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+            git add paper.json && git commit -q -m "paper ledger" && git pull -q --rebase && git push -q
+          fi
       - name: monthly keepalive (GitHub pauses cron after 60 idle days)
         if: github.event.schedule == '17 9 1 * *'
         run: |

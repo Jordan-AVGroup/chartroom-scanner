@@ -1,3 +1,4 @@
 alert.json
 __pycache__/
 *.pyc
+paper_log.txt
