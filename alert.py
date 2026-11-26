@@ -25,5 +25,6 @@ for et, ss in by.items():
     first = ss[0]
     post(f"setup-{et}", f"Rebound setup: {first['coin']} (age {first['age_min']}m)",
          "Fresh cascade rebound setups: " + ', '.join(f"{s['coin']} z {s['z']} vr {s['vr']} age {s['age_min']}m" for s in ss) +
-         ".\nEntry edge decays fast (15m late is still OK, 30m+ late is weak). Review in Chartroom; trades need explicit approval.", 'setup')
+         ".\nEntry edge decays fast (15m late is still OK, 30m+ late is weak). Trades need explicit approval.\n\n" +
+         '\n'.join('DATA ' + json.dumps(dict(coin=s['coin'], strategy=s['strategy'], event_t=s['event_t'], signal_t=s.get('signal_t'), px=s.get('px'), z=s['z'], vr=s['vr'])) for s in ss), 'setup')
 print('scan', f(A['now']), 'down', A['down_h1'], 'up', A['up_h1'], 'events', len(A['events']), 'fresh', len(A['fresh']))

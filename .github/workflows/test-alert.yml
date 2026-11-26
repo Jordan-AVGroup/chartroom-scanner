@@ -12,4 +12,6 @@ jobs:
         run: |
           gh issue create -R "$GITHUB_REPOSITORY" --label test --assignee "$GITHUB_REPOSITORY_OWNER" \
             --title "[test] DRY RUN: Rebound setup SOL (age 3m)" \
-            --body "Dry run, not a real signal. This is exactly how a live alert arrives (posted by the scanner bot). Next: open Chartroom in the Phantom app browser, Signals, Practice run, Take SOL. Paper mode is on, nothing is sent. Close this issue when done."
+            --body "DATA {\"coin\": \"SOL\", \"strategy\": \"cascade\", \"event_t\": $(( $(date +%s) - 1200 )), \"signal_t\": $(( $(date +%s) - 180 )), \"px\": 0, \"z\": 5.8, \"vr\": 3.1, \"test\": true}
+
+Dry run, not a real signal. This is exactly how a live alert arrives (posted by the scanner bot). Next: open Chartroom in the Phantom app browser, Signals, Practice run, Take SOL. Paper mode is on, nothing is sent. Close this issue when done."

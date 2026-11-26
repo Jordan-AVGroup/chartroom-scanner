@@ -86,7 +86,7 @@ def main():
     D = load_all(); z, vr, C, O = features(D); det = detect(z, vr); sig = signals(z, vr, C, det); now = int(z.index[-1])
     out = dict(now=now, coins=len(D), down_h1=int(det['down']['h1'].iloc[-1]), up_h1=int(det['up']['h1'].iloc[-1]), k_down=P['k_down'], k_up=P['k_up'],
                events=[dict(t=int(e), side=sd) for sd in ('down', 'up') for e in det[sd]['events'] if now - e <= 6 * 3600],
-               fresh=[dict(strategy=x['strategy'], coin=x['coin'], event_t=int(x['event_t']), age_min=x['age_min'], z=x.get('z'), vr=x.get('vr')) for x in sig if x['fresh']])
+               fresh=[dict(strategy=x['strategy'], coin=x['coin'], event_t=int(x['event_t']), signal_t=int(x['signal_t']), px=x.get('px'), age_min=x['age_min'], z=x.get('z'), vr=x.get('vr')) for x in sig if x['fresh']])
     json.dump(out, open(a.json_out, 'w'), indent=1)
     print(json.dumps({k: out[k] for k in ('now', 'coins', 'down_h1', 'up_h1')}), len(out['events']), 'events,', len(out['fresh']), 'fresh')
 
