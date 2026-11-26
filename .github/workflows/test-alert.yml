@@ -1,0 +1,15 @@
+name: test-alert
+on:
+  workflow_dispatch:
+permissions:
+  issues: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create -R "$GITHUB_REPOSITORY" --label test --assignee "$GITHUB_REPOSITORY_OWNER" \
+            --title "[test] DRY RUN: Rebound setup SOL (age 3m)" \
+            --body "Dry run, not a real signal. This is exactly how a live alert arrives (posted by the scanner bot). Next: open Chartroom in the Phantom app browser, Signals, Practice run, Take SOL. Paper mode is on, nothing is sent. Close this issue when done."
