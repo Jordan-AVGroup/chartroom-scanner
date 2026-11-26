@@ -1,19 +1,19 @@
 name: scan
 on:
   schedule:
-    - cron: '*/5 * * * *'
-    - cron: '17 9 1 * *'
+    - cron: '7 */2 * * *'      # backup starter only; the loop below does the 5-minute scanning
   workflow_dispatch:
 permissions:
   contents: write
   issues: write
+  actions: write
 concurrency:
   group: scan
   cancel-in-progress: false
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 355
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,28 +21,13 @@ jobs:
           python-version: '3.12'
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python scanner.py --json alert.json
+      - name: scan loop (every 5 minutes)
+        run: ./loop.sh
         env:
           IA_BARS: '1300'
-      - run: python alert.py
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: hand off to the next loop
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: python paper.py
-      - name: save paper ledger and post fills
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -s paper_log.txt ]; then
-            gh issue create --title "Paper fills $(date -u +'%b %d %H:%M UTC')" --label paper --assignee "$GITHUB_REPOSITORY_OWNER" --body "$(cat paper_log.txt)"
-          fi
-          if ! git diff --quiet -- paper.json 2>/dev/null || [ -n "$(git status --porcelain paper.json)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
-            git add paper.json && git commit -q -m "paper ledger" && git pull -q --rebase && git push -q
-          fi
-      - name: monthly keepalive (GitHub pauses cron after 60 idle days)
-        if: github.event.schedule == '17 9 1 * *'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
-          date -u > .keepalive && git add .keepalive && git commit -m "keepalive" && git push
+        run: gh workflow run scan.yml -R "$GITHUB_REPOSITORY" --ref main
