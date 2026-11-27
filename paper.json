@@ -10,7 +10,81 @@
    "start": 1000.0
   }
  },
- "open": [],
+ "open": [
+  {
+   "book": "micro",
+   "strategy": "cascade",
+   "coin": "ETH",
+   "event_t": 1795790700,
+   "entry": 1656.65,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 11.5,
+   "exit_ts": 1795878967
+  },
+  {
+   "book": "full",
+   "strategy": "cascade",
+   "coin": "ETH",
+   "event_t": 1795790700,
+   "entry": 1656.65,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 41.67,
+   "exit_ts": 1795878967
+  },
+  {
+   "book": "full",
+   "strategy": "cascade",
+   "coin": "DOGE",
+   "event_t": 1795790700,
+   "entry": 0.056983,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 41.67,
+   "exit_ts": 1795878967
+  },
+  {
+   "book": "full",
+   "strategy": "cascade",
+   "coin": "LINK",
+   "event_t": 1795790700,
+   "entry": 9.2144,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 41.67,
+   "exit_ts": 1795878967
+  },
+  {
+   "book": "full",
+   "strategy": "cascade",
+   "coin": "ENA",
+   "event_t": 1795790700,
+   "entry": 0.10181,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 41.67,
+   "exit_ts": 1795878967
+  },
+  {
+   "book": "full",
+   "strategy": "cascade",
+   "coin": "AVAX",
+   "event_t": 1795790700,
+   "entry": 6.572,
+   "entry_t": 1795792567,
+   "lag_min": 5,
+   "usd": 41.67,
+   "exit_ts": 1795878967
+  }
+ ],
  "closed": [],
- "seen": []
+ "seen": [
+  "micro-1795790700-ETH",
+  "full-1795790700-ETH",
+  "full-1795790700-DOGE",
+  "full-1795790700-LINK",
+  "full-1795790700-ENA",
+  "full-1795790700-AVAX"
+ ]
 }
